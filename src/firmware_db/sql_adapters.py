@@ -1,3 +1,5 @@
+import sqlite3
+import datetime
 
 def adapt_date_iso(val):
     """Adapt datetime.date to ISO 8601 date."""

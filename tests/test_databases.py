@@ -4,9 +4,18 @@ import os
 import pytest
 import firmware_db
 from sqlalchemy import create_engine, text
+
 def test_connect(testengine):
     with testengine.connect() as conn:
         result=conn.execute(text("SELECT 'engine_works';"))
         res_list = list(result)
         assert len(res_list) == 1
         assert "engine_works" == res_list[0][0]
+
+def test_create(testengine):
+    fdb = firmware_db.Firmware_db(engine=testengine)
+
+def test_local(testengine,shared_tmp_path):
+    fdb = firmware_db.Firmware_db(engine=testengine)
+    fdb.generate_local_json(output_dir=shared_tmp_path)
+    fdb.process_directory(shared_tmp_path)
